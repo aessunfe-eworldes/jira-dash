@@ -3,7 +3,7 @@ from dash import dcc, html
 from dash.dependencies import Input, Output
 import plotly.express as px
 import pandas as pd
-from get_jira import get_jira_data  # Import the function to fetch Jira data
+from get_jira import get_jira_data, pull_from_jira_api  # Import the function to fetch Jira data
 
 # Initialize the app
 app = dash.Dash(__name__)
@@ -126,7 +126,7 @@ def display_page(pathname):
 def fetch_jira_data(n_clicks):
     if n_clicks > 0:
         # Fetch Jira data using the imported function
-        df = get_jira_data()  # Assume this returns a pandas dataframe
+        df = pull_from_jira_api()  # Assume this returns a pandas dataframe
 
         # Process the data and store it
         df['Created Date'] = pd.to_datetime(df['Created Date'])
@@ -151,6 +151,7 @@ def fetch_jira_data(n_clicks):
 
         # Merge assignee and contributor counts, ensuring the index is a column
         merged_people = pd.merge(assignee_counts, contributor_counts, how='outer', on='Person').fillna(0)
+        # merged_people = merged_people.sort_values(by=['Assignee Count', 'Person'], ascending=False)
 
         # Create options for the dropdown
         person_options = [{'label': person, 'value': person} for person in merged_people['Person']]
@@ -232,6 +233,7 @@ def update_assignee_contributor_chart(selected_people, jira_data_json):
 
     # Merge assignee and contributor counts
     merged_counts = pd.merge(assignee_counts, contributor_counts, how='outer', on='Person').fillna(0)
+    merged_counts = merged_counts.sort_values(by=['Assignee Count', 'Person'], ascending=True)
 
     # Filter the data based on selected people
     if selected_people:
