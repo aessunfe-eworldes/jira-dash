@@ -1,0 +1,25 @@
+
+{
+    "filters": [
+        {
+            "column": "Person",
+            "filter_type": "dropdown",
+            "default": "basic"
+        },
+        {
+            "column": "Assignee",
+            "filter_type": "dropdown",
+            "default": "basic"
+        },
+        {
+            "column": "Created Date",
+            "filter_type": "date",
+            "default": "basic"
+        },
+        {
+            "column": "Priority",
+            "filter_type": "dropdown",
+            "default": "basic"
+        }
+    ]
+}
